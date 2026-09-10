@@ -239,7 +239,8 @@
   .detail-body{padding:26px 32px 32px;}
   .detail-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;}
   .detail-head h3{font-size:1.5rem;color:var(--text);max-width:46ch;}
-  .detail-n{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);white-space:nowrap;}
+  .detail-n{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);}
+  @media (min-width:600px){.detail-n{white-space:nowrap;}}
   .detail-n strong{color:var(--text);font-size:15px;}
 
   .detail-grid{margin-top:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;}
@@ -493,7 +494,7 @@
   <div class="page hero-inner">
     <span class="eyebrow">Remuneración Laboral por Logro Educativo · GEIH 2010–2025</span>
     <h1>¿Cuánto más se gana <em>por estudiar</em> en Colombia?</h1>
-    <p class="hero-sub">Una herramienta interactiva del Centro Javeriano de Competitividad para explorar cómo cambia la remuneración según el logro educativo alcanzado — y calcular, con tu propio nivel, cuánto podrías estar ganando frente al resto del país.</p>
+    <p class="hero-sub">Una herramienta interactiva del Centro Javeriano de Competitividad y del Laboratorio de Economía de la Educación (LEE) para explorar cómo cambia la remuneración según el logro educativo alcanzado — y calcular, con tu propio nivel, cuánto podrías estar ganando frente al resto del país.</p>
     <a href="#calculadora" class="hero-cta">
       Calcula tu remuneración
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
