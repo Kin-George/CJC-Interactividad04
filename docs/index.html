@@ -534,14 +534,14 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r="0.6" fill="currentColor"></circle></svg>
           </div>
           <h3>Remuneración</h3>
-          <p>Lo que gana en promedio una persona con determinado nivel educativo, cada mes o por cada hora trabajada. Cifras en pesos constantes de 2025.</p>
+          <p>Lo que gana en promedio una persona con determinado logro educativo, cada mes o por cada hora trabajada. Cifras en pesos constantes de 2025.</p>
         </div>
         <div class="gloss-card">
           <div class="gloss-icon" style="color:var(--complement)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 15H4z"></path></svg>
           </div>
           <h3>Razón frente a Ninguno</h3>
-          <p>Cuántas veces más gana ese nivel educativo frente a quien no tiene <strong>ningún</strong> logro educativo. Una razón de 4x significa cuatro veces más. Por ejemplo, en 2025 el posgrado tiene una razón de <strong>7,8x</strong>: quienes lo alcanzaron ganan en promedio casi ocho veces más que quienes no tienen ningún logro educativo.</p>
+          <p>Cuántas veces más gana ese logro educativo frente a quien no tiene <strong>ningún</strong> logro educativo. Una razón de 4x significa cuatro veces más. Por ejemplo, en 2025 el posgrado tiene una razón de <strong>7,8x</strong>: quienes lo alcanzaron ganan en promedio casi ocho veces más que quienes no tienen ningún logro educativo.</p>
         </div>
         <div class="gloss-card">
           <div class="gloss-icon" style="color:var(--gold)">
@@ -555,8 +555,32 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><line x1="7.5" y1="12" x2="16.5" y2="12"></line></svg>
           </div>
           <h3>Estancamiento</h3>
-          <p>Cuando la remuneración de un nivel educativo no creció —o incluso cayó— en términos reales entre 2010 y 2025, aunque la economía sí lo hizo.</p>
+          <p>Cuando la remuneración de un logro educativo no creció —o incluso cayó— en términos reales entre 2010 y 2025, aunque la economía sí lo hizo.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calculadora">
+    <div class="page">
+      <div class="sec-head">
+        <span class="eyebrow">Herramienta</span>
+        <h2>¿Cuánto podrías estar ganando?</h2>
+        <p>Selecciona tu logro educativo más alto alcanzado dando clic en una de las categorías, o escríbelo directamente, y te mostramos cuánto gana en promedio alguien en esa situación en Colombia, y si ese nivel mejoró o se estancó.</p>
+      </div>
+      <div class="explorer-controls" style="margin-bottom:22px;">
+        <span class="sort-note" id="calc-mode-note">12 logros educativos, disponibles desde el rediseño de la encuesta en 2021</span>
+      </div>
+      <p class="chart-caption" style="margin-top:-6px;margin-bottom:20px;max-width:70ch;">Nota: estas categorías corresponden a la respuesta de cada persona en la GEIH a la pregunta "¿cuál es el mayor logro educativo alcanzado?".</p>
+      <div class="tool-panel">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="calc-input" type="text" autocomplete="off" placeholder="Tu logro educativo… ej. “técnico profesional”, “tecnológica”, “maestría”" />
+        </div>
+        <div class="search-hint" id="calc-hint">Prueba con: normalista, técnica profesional, tecnológica, especialización, maestría, doctorado…</div>
+        <div class="chip-row" id="calc-level-chips" style="margin-top:16px;"></div>
+        <div class="search-results" id="calc-results"></div>
+        <div class="detail-card" id="calc-detail"></div>
       </div>
     </div>
   </section>
@@ -565,7 +589,7 @@
     <div class="page">
       <div class="sec-head">
         <span class="eyebrow">Series de tiempo · 2010–2025</span>
-        <h2>La remuneración por nivel educativo, año a año</h2>
+        <h2>La remuneración por logro educativo, año a año</h2>
         <p>Cada línea es un logro educativo. Actívalas o desactívalas para comparar, y cambia entre remuneración mensual por trabajador y remuneración por hora trabajada.</p>
       </div>
       <div class="explorer-controls" style="align-items:flex-start;">
@@ -583,30 +607,6 @@
         <h3 id="serie-heading" style="font-size:1.25rem;margin-top:4px;">Remuneración por trabajador, 2010–2025</h3>
         <div id="serie-chart" style="margin-top:22px;"></div>
         <p class="chart-caption">Pasa el cursor sobre una línea para ver su nombre · la serie no tiene dato en 2020 por el choque de la pandemia.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="calculadora">
-    <div class="page">
-      <div class="sec-head">
-        <span class="eyebrow">Herramienta</span>
-        <h2>¿Cuánto podrías estar ganando?</h2>
-        <p>Selecciona tu nivel educativo más alto alcanzado dando clic en una de las categorías, o escríbelo directamente, y te mostramos cuánto gana en promedio alguien en esa situación en Colombia, y si ese nivel mejoró o se estancó.</p>
-      </div>
-      <div class="explorer-controls" style="margin-bottom:22px;">
-        <span class="sort-note" id="calc-mode-note">12 logros educativos, disponibles desde el rediseño de la encuesta en 2021</span>
-      </div>
-      <p class="chart-caption" style="margin-top:-6px;margin-bottom:20px;max-width:70ch;">Nota: estas categorías corresponden a la respuesta de cada persona en la GEIH a la pregunta "¿cuál es el mayor logro educativo alcanzado?".</p>
-      <div class="tool-panel">
-        <div class="search-box">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input id="calc-input" type="text" autocomplete="off" placeholder="Tu nivel educativo… ej. “técnico profesional”, “tecnológica”, “maestría”" />
-        </div>
-        <div class="search-hint" id="calc-hint">Prueba con: normalista, técnica profesional, tecnológica, especialización, maestría, doctorado…</div>
-        <div class="chip-row" id="calc-level-chips" style="margin-top:16px;"></div>
-        <div class="search-results" id="calc-results"></div>
-        <div class="detail-card" id="calc-detail"></div>
       </div>
     </div>
   </section>
@@ -662,7 +662,7 @@
       </div>
       <div class="chart-wrap">
         <div class="chart-title" id="brecha-title"></div>
-        <h3 id="brecha-heading" style="font-size:1.25rem;margin-top:4px;">Remuneración mensual por nivel educativo</h3>
+        <h3 id="brecha-heading" style="font-size:1.25rem;margin-top:4px;">Remuneración mensual por logro educativo</h3>
         <div class="chip-row" id="brecha-legend" style="margin-top:18px;"></div>
         <div id="brecha-chart" style="margin-top:10px;"></div>
       </div>
@@ -688,7 +688,7 @@
         </div>
         <div class="concl-card">
           <div class="n">03</div>
-          <p><strong>El país no puede depender indefinidamente de que la gente estudie más.</strong> Los aumentos sostenidos en la remuneración promedio requieren, además, que cada nivel educativo sea más productivo y mejor remunerado.</p>
+          <p><strong>El país no puede depender indefinidamente de que la gente estudie más.</strong> Los aumentos sostenidos en la remuneración promedio requieren, además, que cada logro educativo sea más productivo y mejor remunerado.</p>
           <p>Estudiar seguirá siendo una vía para acceder a mejores empleos, pero muchos egresados pueden encontrar que su esfuerzo educativo no mejora sus condiciones frente a generaciones anteriores.</p>
         </div>
         <div class="concl-card">
@@ -1068,7 +1068,7 @@
     if(crec == null){
       verdict = `No hay suficiente historia todavía para medir su tendencia ${periodLabel}.`;
     } else if(trend === 'riesgo'){
-      verdict = `Este nivel educativo <b>perdió poder adquisitivo</b>: su remuneración mensual promedio cayó ${fmtPct(crec)} al año ${periodYears}.`;
+      verdict = `Este logro educativo <b>perdió poder adquisitivo</b>: su remuneración mensual promedio cayó ${fmtPct(crec)} al año ${periodYears}.`;
     } else if(trend === 'baja'){
       verdict = `La remuneración de este nivel se mantuvo <b>prácticamente estancada</b>: creció apenas ${fmtPct(crec)} al año ${periodYears}.`;
     } else {
@@ -1334,7 +1334,7 @@
       <div class="ib-stat">${diffPct!=null?'+'+diffPct+'%':'—'}</div>
       <div class="ib-text"><strong>${top.label}</strong> paga ${diffPct!=null?`<strong>${diffPct}% más</strong>`:'más'} que <strong>${bottom.label}</strong>
         <span style="color:var(--text-faint)">(${formatFn(top[valueKey])} vs. ${formatFn(bottom[valueKey])})</span>.</div>
-      <div class="ib-note"><b>La brecha no es solo por educación.</b> Sectores y regiones más productivos pagan más incluso a igual nivel educativo — la barra clara del tooltip muestra qué parte de sus ocupados tiene formación técnica, universitaria o de posgrado.</div>
+      <div class="ib-note"><b>La brecha no es solo por educación.</b> Sectores y regiones más productivos pagan más incluso a igual logro educativo — la barra clara del tooltip muestra qué parte de sus ocupados tiene formación técnica, universitaria o de posgrado.</div>
     `;
   }
   function renderExplorer(){
@@ -1354,7 +1354,7 @@
     if(expState.view === 'cuadrante'){
       renderQuadrant(host, items, expState.idx, formatFn);
       document.getElementById('sort-note').textContent = 'Tamaño = número de ocupados';
-      document.getElementById('chart-caption').innerHTML = `Cada burbuja es un${expState.dim==='sectores'?' sector':' departamento'} y su tamaño representa el número de ocupados. Las líneas punteadas marcan el promedio nacional de remuneración y de participación con educación superior (técnica, universitaria o posgrado) — quienes quedan arriba a la izquierda pagan más de lo que su nivel educativo por sí solo explicaría.${dimNote}`;
+      document.getElementById('chart-caption').innerHTML = `Cada burbuja es un${expState.dim==='sectores'?' sector':' departamento'} y su tamaño representa el número de ocupados. Las líneas punteadas marcan el promedio nacional de remuneración y de participación con educación superior (técnica, universitaria o posgrado) — quienes quedan arriba a la izquierda pagan más de lo que su logro educativo por sí solo explicaría.${dimNote}`;
     } else {
       renderBarChart(host, items, expState.idx, colorFn, formatFn, (e, it) => {
         showTooltip(e, it.label,
