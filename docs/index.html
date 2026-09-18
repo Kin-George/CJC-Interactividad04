@@ -1388,18 +1388,23 @@
         <span class="dot" style="background:${LINE_COLORS[i]}"></span>${n.label}
       </button>`).join('');
   }
-  function niceLogTicks(lo, hi){
-    const all = [500000,700000,1000000,1500000,2000000,3000000,4000000,5000000,7000000,10000000,
-                 2500,3500,5000,7000,10000,15000,20000,30000,40000,60000].sort((a,b)=>a-b);
-    let ticks = all.filter(c => c >= lo && c <= hi);
-    if(ticks.length > 6) ticks = ticks.filter((_,i) => i % Math.ceil(ticks.length/6) === 0);
+  function niceLinearTicks(maxVal, targetCount){
+    targetCount = targetCount || 5;
+    const rawStep = maxVal / targetCount;
+    const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    const norm = rawStep / mag;
+    const niceNorm = norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10;
+    const step = niceNorm * mag;
+    const niceMax = Math.ceil(maxVal / step) * step;
+    const ticks = [];
+    for(let v=0; v<=niceMax+1e-6; v+=step) ticks.push(Math.round(v));
     return ticks;
   }
   function renderSerie(){
     const host = document.getElementById('serie-chart');
     host.innerHTML = '';
     document.getElementById('serie-heading').textContent = serieState.metric === 'mensual'
-      ? 'Remuneración mensual por trabajador, 2010–2025' : 'Remuneración por hora trabajada, 2010–2025';
+      ? 'Remuneración mensual por trabajador, 2010–2025 (valores reales)' : 'Remuneración por hora trabajada, 2010–2025 (valores reales)';
     const metricKey = serieState.metric === 'mensual' ? 'remMensual' : 'remHora';
     const w = measureW(host, 900);
     const compact = w < 480;
@@ -1411,15 +1416,15 @@
     const xScale = yr => marginL + ((yr-xMin)/(xMax-xMin))*plotW;
     const visible = DATA.serieNacional.filter(d => !serieState.hidden[d.cod]);
     const vals = visible.map(d => d[metricKey]);
-    const logMin = Math.log10(Math.min(...vals)*0.85), logMax = Math.log10(Math.max(...vals)*1.15);
-    const yScale = v => marginT + plotH - ((Math.log10(v)-logMin)/(logMax-logMin))*plotH;
+    const ticks = niceLinearTicks(Math.max(...vals));
+    const yMax = ticks[ticks.length-1];
+    const yScale = v => marginT + plotH - (v/yMax)*plotH;
 
     let svg = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}">`;
-    const ticks = niceLogTicks(Math.min(...vals)*0.85, Math.max(...vals)*1.15);
     ticks.forEach(t => {
       const y = yScale(t);
       svg += `<line class="grid-line" x1="${marginL}" x2="${w-marginR}" y1="${y}" y2="${y}"></line>`;
-      const lbl = serieState.metric === 'hora' ? Math.round(t/1e3)+'k'
+      const lbl = t === 0 ? '0' : serieState.metric === 'hora' ? Math.round(t/1e3)+'k'
         : (t/1e6).toLocaleString('es-CO',{maximumFractionDigits:t<1e6?1:0})+'M';
       svg += `<text x="${marginL-8}" y="${y+3}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="${compact?9:10.5}" fill="var(--text-faint)">${lbl}</text>`;
     });
