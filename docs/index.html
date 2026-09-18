@@ -278,6 +278,8 @@
   .density-axis{stroke:var(--line-soft);stroke-width:1;}
   .density-curve{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:d .8s cubic-bezier(.16,1,.3,1);pointer-events:none;}
   .density-area{stroke:none;fill-opacity:.16;transition:d .8s cubic-bezier(.16,1,.3,1);pointer-events:none;}
+  .density-median-line{stroke:var(--accent);stroke-width:1.4;stroke-dasharray:3 2;transition:x1 .8s cubic-bezier(.16,1,.3,1), x2 .8s cubic-bezier(.16,1,.3,1);cursor:pointer;}
+  .density-xticks{width:100%;max-width:240px;margin:4px auto 0;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9.5px;color:var(--text-faint);}
   #sector-dist-wrap{margin-top:20px;}
   .sd-legend{display:flex;gap:18px;margin:2px 0 16px;font-size:11.5px;color:var(--text-faint);flex-wrap:wrap;}
   .sd-legend span{display:flex;align-items:center;gap:6px;}
@@ -716,7 +718,7 @@
         </div>
         <div class="concl-card">
           <div class="n">03</div>
-          <p><strong>El logro educativo no puede ser la única palanca de largo plazo.</strong> Los aumentos sostenidos en la remuneración promedio requieren, además, que cada logro educativo sea más productivo y mejor remunerado.</p>
+          <p><strong>El logro educativo no puede ser el único motor de largo plazo.</strong> Los aumentos sostenidos en la remuneración promedio requieren, además, que cada logro educativo sea más productivo y mejor remunerado.</p>
           <p>Estudiar seguirá siendo una vía clave para acceder a mejores empleos, pero el reto no es solo que más personas estudien: la economía también debe volverse más productiva para que ese esfuerzo educativo siga rindiendo tanto como en generaciones anteriores.</p>
         </div>
         <div class="concl-card">
@@ -911,17 +913,26 @@
       <div class="density-wrap" id="${id}-wrap">
         <svg viewBox="0 0 160 90" preserveAspectRatio="none" id="${id}">
           <line class="density-axis" x1="0" y1="90" x2="160" y2="90"></line>
+          <line class="density-axis" x1="0" y1="0" x2="0" y2="90"></line>
           <g id="${id}-hist">
             ${bars}
             <path id="${id}-area" class="density-area"></path>
             <path id="${id}-curve" class="density-curve"></path>
           </g>
+          <line id="${id}-median" class="density-median-line" x1="0" x2="0" y1="4" y2="90"></line>
         </svg>
       </div>
+      <div class="density-xticks" id="${id}-xticks"></div>
       <div class="m-foot" id="${id}-foot"></div>`;
   }
 
   function densityBinCenter(i){ return i*10 + 5; }
+
+  function densityXScale(bins, v){
+    const lo = Math.log10(bins[0]), hi = Math.log10(bins[bins.length-1]);
+    const t = Math.max(0, Math.min(1, (Math.log10(v)-lo)/(hi-lo)));
+    return t*160;
+  }
 
   function renderDensityHist(id, shares, bins, color){
     const max = Math.max(...shares, 0.0001);
@@ -950,17 +961,34 @@
       const areaPts = [[points[0][0],90], ...points, [points[points.length-1][0],90]];
       area.setAttribute('d', catmullRomPath(areaPts) + ' Z');
     }
+
+    const xticks = document.getElementById(`${id}-xticks`);
+    if(xticks && bins && bins.length){
+      const mid = bins[Math.floor((bins.length-1)/2)];
+      xticks.innerHTML = `<span>${fmtM(bins[0])}</span><span>${fmtM(mid)}</span><span>${fmtM(bins[bins.length-1])}</span>`;
+    }
+  }
+
+  function renderDensityMedian(id, medianVal, bins){
+    const line = document.getElementById(`${id}-median`);
+    if(!line || medianVal == null || !bins) return;
+    const x = densityXScale(bins, medianVal).toFixed(1);
+    line.setAttribute('x1', x);
+    line.setAttribute('x2', x);
+    line.onmousemove = e => showTooltip(e, 'Mediana', `<div class="vt-row"><span>Remuneración mensual</span><b>${fmtM(medianVal)}</b></div>`);
+    line.onmouseleave = hideTooltip;
   }
 
   function densityFoot(id, n){
     const foot = document.getElementById(`${id}-foot`);
     if(!foot) return;
-    foot.innerHTML = `El 50% central de este grupo gana entre <strong style="color:var(--text)">${fmtM(n.remMensualP25_2025)}</strong> y <strong style="color:var(--text)">${fmtM(n.remMensualP75_2025)}</strong>`;
+    foot.innerHTML = `El 50% central de este grupo gana entre <strong style="color:var(--text)">${fmtM(n.remMensualP25_2025)}</strong> y <strong style="color:var(--text)">${fmtM(n.remMensualP75_2025)}</strong> · mediana <strong style="color:var(--accent)">${fmtM(n.remMensualMediana2025)}</strong>`;
   }
   function animateDensity(id, n, binsPesos, color){
     const svg = document.getElementById(id);
     if(!svg || !n) return;
     renderDensityHist(id, n.densidadMensual, binsPesos, color);
+    renderDensityMedian(id, n.remMensualMediana2025, binsPesos);
     densityFoot(id, n);
   }
 
@@ -1120,7 +1148,8 @@
         `<div class="vt-row"><span>Remuneración mensual</span><b>${fmtM(it.mensual)}</b></div>` +
         `<div class="vt-row"><span>Remuneración por hora</span><b>${fmtMil(it.hora)}</b></div>` +
         `<div class="vt-row"><span>Con educación superior</span><b>${fmtPct(it.superior)}</b></div>` +
-        `<div class="vt-row"><span>Ocupados</span><b>${fmtN(it.n)}</b></div>`));
+        `<div class="vt-row"><span>Ocupados</span><b>${fmtN(it.n)}</b></div>` +
+        sectorNoteHtml(it.label)));
       el.addEventListener('mouseleave', hideTooltip);
     });
   }
@@ -1497,6 +1526,13 @@
       <div class="ib-note"><b>La brecha no es solo por educación.</b> Sectores y regiones más productivos pagan más incluso a igual logro educativo — la barra clara del tooltip muestra qué parte de sus ocupados tiene formación técnica, universitaria o de posgrado.</div>
     `;
   }
+  const SECTOR_NOTES = {
+    'Organizaciones extraterritoriales': 'Embajadas, consulados y organismos internacionales (como la ONU) que operan en el país pero no están sujetos a su jurisdicción económica.',
+  };
+  function sectorNoteHtml(label){
+    const note = SECTOR_NOTES[label];
+    return note ? `<div class="vt-note" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--line-soft);">${note}</div>` : '';
+  }
   function renderExplorer(){
     const raw = DATA[expState.dim];
     const items = raw.map(r => ({label:r.label, mensual:r.remMensual, hora:r.remHora, n:r.ocupados, superior:r.participacionSuperior}))
@@ -1521,7 +1557,8 @@
           `<div class="vt-row"><span>Remuneración mensual</span><b>${fmtM(it.mensual)}</b></div>` +
           `<div class="vt-row"><span>Remuneración por hora</span><b>${fmtMil(it.hora)}</b></div>` +
           `<div class="vt-row"><span>Con educación superior</span><b>${fmtPct(it.superior)}</b></div>` +
-          `<div class="vt-row"><span>Ocupados</span><b>${fmtN(it.n)}</b></div>`);
+          `<div class="vt-row"><span>Ocupados</span><b>${fmtN(it.n)}</b></div>` +
+          sectorNoteHtml(it.label));
       });
       document.getElementById('sort-note').textContent = 'Ordenado de mayor a menor';
       document.getElementById('chart-caption').innerHTML = `Miles de millones de ocupados ponderados por el factor de expansión de la GEIH. Promedio nacional: <strong>${expState.idx==='mensual'?fmtM(DATA.nacional.remMensual2025):fmtMil(DATA.nacional.remHora2025)}</strong>.${dimNote}`;
